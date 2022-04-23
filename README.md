@@ -1,6 +1,8 @@
 # Elevators Simulator
 Simulator of elevators written in Python using PyQt5 as GUI. The structure of elevators is defined in JSON file. This simulator is designed for practising of programming automata.
 
+![example2](/docs/example2.png)
+
 ## How to run
 
 1. Clone or download this repository: `git clone https://github.com/bsaid/ElevatorSimulator.git`
@@ -20,7 +22,17 @@ The structure of elevators is defined in JSON format. The JSON file defines the 
 [docs/example1.json](/docs/example1.json)
 
 ```json
-# /docs/example1.json
+{
+  "buttons": [],
+  "elevators": [
+    {
+	  "id": "Alfa",
+	  "floors": [-1,0,1,2],
+	  "maxSpeed": 1.0,
+	  "speedStep": 0.05
+	}
+  ]
+}
 ```
 
 The result:
@@ -34,7 +46,17 @@ We can define more complex structure in the JSON file. Please notice that the el
 [docs/example2.json](/docs/example2.json)
 
 ```json
-# /docs/example2.json
+{
+  "buttons": [],
+  "elevators": [
+    { "id": "A", "floors": [-1,0,1,2], "maxSpeed": 1.0, "speedStep": 0.05 },
+	{ "id": "B", "floors": [0,1,2], "maxSpeed": 1.0, "speedStep": 0.05 },
+	{ "id": "C", "floors": [-1,1,2], "maxSpeed": 1.0, "speedStep": 0.05 },
+	{ "id": "D", "floors": [-1,0,1], "maxSpeed": 1.0, "speedStep": 0.05 },
+	{ "id": "E", "floors": [0,2], "maxSpeed": 1.0, "speedStep": 0.05 },
+	{ "id": "F", "floors": [-1,2], "maxSpeed": 1.0, "speedStep": 0.05 }
+  ]
+}
 ```
 
 The result:
@@ -48,7 +70,16 @@ The JSON file also contains a list of all buttons. Currently, we will assign onl
 [docs/example3.json](/docs/example3.json)
 
 ```json
-# /docs/example3.json
+{
+  "buttons": [
+    {"id" : "Up"},
+    {"id" : "Down"},
+    {"id" : "Stop"}
+  ],
+  "elevators": [
+    { "id": "A", "floors": [0,1], "maxSpeed": 1.0, "speedStep": 0.05 }
+  ]
+}
 ```
 
 The result:
@@ -64,7 +95,70 @@ Example of the user code:
 [docs/example4.py](/docs/example4.py)
 
 ```python
-# /docs/example4.py
+import elevators
+
+class GlobalData:
+    alfaDirection = 1
+    deltaDirection = 0
+    doorsDirection = 1
+
+def processEvents(e):
+    while e.numEvents() > 0:
+        event = e.getNextEvent()
+        if event == 'DeltaUp':
+            GlobalData.deltaDirection = 1
+        elif event == 'DeltaDown':
+            GlobalData.deltaDirection = -1
+        elif event == 'DeltaStop':
+            GlobalData.deltaDirection = 0
+        else:
+            print('Unknown event.')
+
+def processAlfa(e):
+    if e.getSpeed('Alfa') > 1.9:
+        GlobalData.alfaDirection = -1
+    if e.getSpeed('Alfa') < -1.9:
+        GlobalData.alfaDirection = 1
+    if GlobalData.alfaDirection  == 1:
+        e.speedUp('Alfa')
+    else:
+        e.speedDown('Alfa')
+
+def processDelta(e):
+    if GlobalData.deltaDirection == 1:
+        e.speedUp('Delta')
+    elif GlobalData.deltaDirection == -1:
+        e.speedDown('Delta')
+    else:
+        speed = e.getSpeed('Delta')
+        if speed > 0:
+            e.speedDown('Delta')
+        elif speed < 0:
+            e.speedUp('Delta')
+
+def processDoors(e):
+    if e.getDoorsPosition('Delta', 0) > 0.9:
+        GlobalData.doorsDirection = -1
+    elif e.getDoorsPosition('Delta', 0) < 0.1:
+        GlobalData.doorsDirection = 1
+
+    if GlobalData.doorsDirection == 1:
+        e.openDoors('Delta', 0)
+    else:
+        e.closeDoors('Delta', 0)
+
+def printTelemetry(e):
+    print(e.getSpeed('Alfa'), e.getDoorsPosition('Delta', 0))
+
+def elevatorSimulationStep(e):
+    processEvents(e)
+    processAlfa(e)
+    processDelta(e)
+    processDoors(e)
+    printTelemetry(e)
+    
+configFileName = 'elevators.json'
+elevators.runSimulation(configFileName, elevatorSimulationStep)
 ```
 
 JSON configuration:
@@ -72,7 +166,17 @@ JSON configuration:
 [docs/example4.json](/docs/example4.json)
 
 ```
-# /docs/example4.json
+{
+  "buttons": [
+    {"id" : "DeltaUp"},
+    {"id" : "DeltaDown"},
+    {"id" : "DeltaStop"}
+  ],
+  "elevators": [
+    {"id": "Alfa", "floors": [0,1,2], "maxSpeed": 2.0, "speedStep": 0.2},
+    {"id": "Delta", "floors": [0,2], "maxSpeed": 0.5, "speedStep": 0.05}
+  ]
+}
 ```
 
 The result:
