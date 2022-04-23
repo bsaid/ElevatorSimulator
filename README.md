@@ -183,6 +183,10 @@ The result:
 
 ![example4](/docs/example4.gif)
 
+### (5) How to implement a safe, reliable, and user-friendly structure of the elevators?
+
+This question is the goal for the users. The goal of this application is to provide a simulated environment for experiments and practice of programming automata.
+
 ## Simulation API
 
 - `e.getConfig()` - Return the whole configuration as Python dictionary.
