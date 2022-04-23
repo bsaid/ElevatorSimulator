@@ -1,11 +1,11 @@
 import elevators
 
 class GlobalData:
-        alfaDirection = 1
-        deltaDirection = 0
-        doorsDirection = 1
+    alfaDirection = 1
+    deltaDirection = 0
+    doorsDirection = 1
 
-def elevatorSimulationStep(e):
+def processEvents(e):
     while e.numEvents() > 0:
         event = e.getNextEvent()
         if event == 'DeltaUp':
@@ -17,15 +17,17 @@ def elevatorSimulationStep(e):
         else:
             print('Unknown event.')
 
-    if e.getSpeed('Alfa') > 0.9:
+def processAlfa(e):
+    if e.getSpeed('Alfa') > 1.9:
         GlobalData.alfaDirection = -1
-    if e.getSpeed('Alfa') < -0.9:
+    if e.getSpeed('Alfa') < -1.9:
         GlobalData.alfaDirection = 1
     if GlobalData.alfaDirection  == 1:
         e.speedUp('Alfa')
     else:
         e.speedDown('Alfa')
 
+def processDelta(e):
     if GlobalData.deltaDirection == 1:
         e.speedUp('Delta')
     elif GlobalData.deltaDirection == -1:
@@ -37,18 +39,26 @@ def elevatorSimulationStep(e):
         elif speed < 0:
             e.speedUp('Delta')
 
-    if e.getDoorsPosition('Bravo', 2) > 0.9:
+def processDoors(e):
+    if e.getDoorsPosition('Delta', 0) > 0.9:
         GlobalData.doorsDirection = -1
-    elif e.getDoorsPosition('Bravo', 2) < 0.1:
+    elif e.getDoorsPosition('Delta', 0) < 0.1:
         GlobalData.doorsDirection = 1
 
     if GlobalData.doorsDirection == 1:
-        e.openDoors('Bravo', 2)
+        e.openDoors('Delta', 0)
     else:
-        e.closeDoors('Bravo', 2)
-    
-    #print(e.getSpeed('Alfa'), e.getDoorsPosition('Bravo', 2))
-    #print(e.getDoors('Bravo'))
+        e.closeDoors('Delta', 0)
+
+def printTelemetry(e):
+    print(e.getSpeed('Alfa'), e.getDoorsPosition('Delta', 0))
+
+def elevatorSimulationStep(e):
+    processEvents(e)
+    processAlfa(e)
+    processDelta(e)
+    processDoors(e)
+    printTelemetry(e)
     
 configFileName = 'elevators.json'
 elevators.runSimulation(configFileName, elevatorSimulationStep)
