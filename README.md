@@ -39,7 +39,7 @@ We can define more complex structure in the JSON file. Please notice that the el
 
 The result:
 
-![example2](/docs/example2.json)
+![example2](/docs/example2.png)
 
 ### (3) Buttons to control the elevators
 
@@ -53,7 +53,7 @@ The JSON file also contains a list of all buttons. Currently, we will assign onl
 
 The result:
 
-![example3](/docs/example3.json)
+![example3](/docs/example3.png)
 
 ### (4) Writing the code
 
