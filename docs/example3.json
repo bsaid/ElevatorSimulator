@@ -1,0 +1,10 @@
+{
+  "buttons": [
+    {"id" : "Up"},
+    {"id" : "Down"},
+    {"id" : "Stop"}
+  ],
+  "elevators": [
+    { "id": "A", "floors": [0,1], "maxSpeed": 1.0, "speedStep": 0.05 }
+  ]
+}
