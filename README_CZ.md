@@ -206,23 +206,22 @@ Odpověď na tuto otázku zůstavá jako cvičení pro uživatele. Cílem tohoto
 
 - `e.getDescription(id)` - Vrací slovník všech parametrů pro daný výtah podle jeho ID.
 
-- `e.getPosition(id)` - Returns position of the given elevator as float. Integers represent that the elevator is exactly in given floor. Decimal numbers represent positions between floors.
+- `e.getPosition(id)` - Vrací pozici daného výtahu jako float. Celé číslo říká, že výtah se nachází v patře a může otevřít dveře. Desetinné číslo říká, kde se mezi danými dvěma patry nachází.
 
-- `e.getSpeed(id)` - Returns the current speed of the given elevator. Positive number represents climbing direction. Number 1.0 represents a speed of 1.0 floors per second.
+- `e.getSpeed(id)` - Vrací rychlost daného výtahu. Kladné číslo reprezentuje stoupání. Číslo 1.0 udává rychlost stoupání jedno patro za sekundu.
 
-- `e.speedUp(id)` - Increases speed of the given elevator. If the elevator is descending (has negative speed), this negative speed is decreased.
+- `e.speedUp(id)` - Zvýší rychlost výtahu o 0.01. Pokud výtah klesá (rychlost je záporná), tak výtah zpomalí.
 
-- `e.speedDown(id)` - Opposite function to `e.speedUp(id)`.
+- `e.speedDown(id)` - Opačná funkce k `e.speedUp(id)`.
 
-- `e.numEvents()` - Returns the number of events in the queue.
+- `e.numEvents()` - Vrací počet událostí ve frontě. Události jsou zejména stisknutá tlačítka.
 
-- `e.getNextEvent()` - Returns the string of the first event in the queue and removes this event from the queue.
+- `e.getNextEvent()` - Vrací text první události ve frontě, a tuto událost z fronty odstraní.
 
-- `e.getDoors(id)` - Returns a list of float numbers representing all door positions for the given elevator. Zero means closed doors, one means fully opened doors.
+- `e.getDoors(id)` - Dává informace o otevřených dveřích daného výtahu. Vrací seznam desetinných čísel, kde každé číslo je na intervalu od 0 do 1. Hodnota 0 znamená zavřené dveře, hodnota 1 otevřené dveře. Hodnoty jsou v seznamu seřazeny vzestupně podle čísla patra.
 
-- `e.openDoors(id, floor)` - Start or keep opening of the doors for given elevator at given floor. This function must be called repeatedly until the doors are fully opened.
+- `e.openDoors(id, floor)` - Začne otevírat dveře daného výtahu `id` v daném patře `floor`. Tato funkce musí být volána periodicky, dokud se dveře zcela neotevřou.
 
-- `e.closeDoors(id, floor)` - Oposite function to `e.openDoors(id, floor)`.
+- `e.closeDoors(id, floor)` - Opačná funkce k `e.openDoors(id, floor)`.
 
-- `e.getDoorsPosition(id, floor)` - Returns position of the doors for given elevator at given floor. Zero means closed doors, one means fully opened doors.
-
+- `e.getDoorsPosition(id, floor)` - Vrací desetinné číslo od 0 do 1 pro daný výtah `id` v daném patře `floor`. Nula znamená plně zavřené dveře a jedna znamená plně otevřené dveře.
