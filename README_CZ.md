@@ -171,7 +171,7 @@ configFileName = 'elevators.json'
 elevators.runSimulation(configFileName, elevatorSimulationStep)
 ```
 
-JSON configuration:
+JSON konfigurace:
 
 [docs/example4.json](/docs/example4.json)
 
