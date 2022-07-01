@@ -2,16 +2,16 @@
 
 # Simulátor výtahů
 
-Tento simulátor výtahů je napsaný v jazyce Python a používá PyQt5 jako grafické rozhraní. Strukturu simulovaných výtahů definuje uživatel ve formátu JSON. Simulátor slouží jako nástroj na procvičování programování stavových automatů.
+Tento simulátor výtahů je napsaný v jazyce Python a používá PyQt5 jako grafické rozhraní. Strukturu simulovaných výtahů definuje uživatel ve formátu JSON (vysvětleno níže). Simulátor slouží jako nástroj na procvičování programování stavových automatů.
 
 ![example2](/docs/example2.png)
 
 ## Jak simulátor nainstalovat a spustit
 
-1. Naklonujte si tento repozitář: `git clone https://github.com/bsaid/ElevatorSimulator.git` Pokud nevíte, jak se klonuje GIT repozitář, můžete si ho [stáhnout jako ZIP](//TODO).
-2. Nainstalujte si [Python3](https://www.python.org/downloads/) pokud ho ještě nemáte. Během instalace zatrhněte možnost "Add to PATH".
-3. Doinstalujte si balíček PyQt5: `pip3 install PyQt5`
-4. Otestujte spoštění simulátoru pomocí příkladu [example.py](/example.py): `python3 ./example.py`
+1. [Stáhněte si simulátor jako ZIP archív.](https://github.com/bsaid/ElevatorSimulator/archive/refs/heads/main.zip). Pokud umíte s GITem, tak si raději naklonujte tento repozitář: `git clone https://github.com/bsaid/ElevatorSimulator.git`
+2. Nainstalujte si [Python3](https://www.python.org/downloads/), pokud ho ještě nemáte. Během instalace zatrhněte možnost "Add to PATH". Podrobnější návod, jak nainstalovat Python3, najdete například [zde](https://naucse.python.cz/lessons/beginners/install/).
+3. Doinstalujte si balíček PyQt5 zadáním příkazu do příkazové řádky (terminálu): `pip3 install PyQt5` Podrobnější návod, jak pracovat s příkazovou řádkou, najdete například [zde](https://naucse.python.cz/course/pyladies/beginners/cmdline/).
+4. Otestujte spuštění simulátoru pomocí příkladu [example.py](/example.py). Opět můžete zadat následující příkaz do příkazové řádky, pokud se nacházíte ve stejné složce: `python3 ./example.py` Na Windows můžete také v průzkumníku kliknout pravým tlačítkem na soubor [example.py](/example.py) a vybrat položku `Edit in IDLE`. V otevřeném editoru lze kód upravovat nebo spustit pomocí klávesy `F5`.
 5. Mělo by se objevit nové okno. Po kliknutí na tlačítko `Start` byste měli vidět něco takového:
 
 ![example4](/docs/example4.gif)
@@ -21,6 +21,7 @@ Tento simulátor výtahů je napsaný v jazyce Python a používá PyQt5 jako gr
 1. Ověřte si, že jste během instalace Pythonu opravdu zaškrtli políčko "Add to PATH". Pokud si nejste jisti, raději Python přeinstalujte.
 2. Pokud používáte Windows a nefunguje vám v příkazové řádce `cmd.exe` příkaz `pip3 install PyQt5`, můžete místo něho zkusit `C:/path/to/python.exe -m pip install PyQt5`
 3. Ukázkový příklad [example.py](/example.py): `python3 ./example.py` můžete také otevřít v programu `IDLE`, který se na Windows instaluje společně s Pythonem, a následně ho v tomto programu spustit pomocí `F5`.
+4. Pokud stále něco nefunguje, můžete založit [Isuue tady na GitHubu](https://github.com/bsaid/ElevatorSimulator/issues). Řešitelé [Korespondenčního semináře M&M](https://mam.mff.cuni.cz/) mě můžou kontaktovat e-mailem zveřejněným společně se zadáním každého čísla.
 
 ## Příklady
 
@@ -194,7 +195,7 @@ Výsledek:
 
 ### (5) Jak navrhnout bezpečnou, spolehlivou a uživatelsky přátelskou strukturu výtahů?
 
-Odpověď na tuto otázku zůstavá jako cvičení pro uživatele. Cílem tohoto simulátoru je poskytnout simulované prostředí pro experimentování a procvičování programovaní stavovývh automatů.
+Odpověď na tuto otázku zůstavá jako cvičení pro uživatele. Cílem tohoto simulátoru je poskytnout simulované prostředí pro experimentování a procvičování programovaní stavových automatů.
 
 ## Funkce dostupné pro uživatele
 
