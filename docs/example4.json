@@ -1,11 +1,6 @@
 {
-  "buttons": [
-    {"id" : "DeltaUp"},
-    {"id" : "DeltaDown"},
-    {"id" : "DeltaStop"}
-  ],
+  "buttons": [],
   "elevators": [
-    {"id": "Alfa", "floors": [0,1,2], "maxSpeed": 2.0, "speedStep": 0.2},
-    {"id": "Delta", "floors": [0,2], "maxSpeed": 0.5, "speedStep": 0.05}
+    {"id": "Alfa", "floors": [0,1], "maxSpeed": 1.0, "speedStep": 0.1}
   ]
 }

@@ -13,7 +13,7 @@ Simulator of elevators written in Python using PyQt5 as GUI. The structure of el
 4. Run the [example.py](/example.py): `python3 ./example.py`
 5. A new window with the simulation should appear. After clicking the `Start` button you should see something like this:
 
-![example4](/docs/example4.gif)
+![example5](/docs/example5.gif)
 
 ## Examples
 
@@ -92,9 +92,38 @@ The result:
 
 The user code is a Python3 file that needs to `import elevators`, and then it has to call `elevators.runSimulation(configFileName, elevatorSimulationStep)` where `configFileName` is the name of the `elevators.json` file and `def elevatorSimulationStep(e)` is a procedure that needs to be implemented by user and that is called inside the simulation loop. The parameter `e` is a class with the current information about all the elevators and it also contains API to interact with the elevators during the simulation.
 
-Example of the user code:
+Example of the simple user code:
 
 [docs/example4.py](/docs/example4.py)
+
+```python
+import elevators
+
+def elevatorSimulationStep(e):
+    if (e.getTime()+10) % 40 < 20:
+        e.speedUp('Alfa')
+    else:
+        e.speedDown('Alfa')
+
+elevators.runSimulation('example4.json', elevatorSimulationStep)
+```
+
+JSON configuration:
+
+[docs/example4.json](/docs/example4.json)
+
+```
+{
+  "buttons": [],
+  "elevators": [
+    {"id": "Alfa", "floors": [0,1], "maxSpeed": 1.0, "speedStep": 0.1}
+  ]
+}
+```
+
+Example of the more advanced user code:
+
+[docs/example5.py](/docs/example5.py)
 
 ```python
 import elevators
@@ -165,7 +194,7 @@ elevators.runSimulation(configFileName, elevatorSimulationStep)
 
 JSON configuration:
 
-[docs/example4.json](/docs/example4.json)
+[docs/example5.json](/docs/example5.json)
 
 ```
 {
@@ -183,7 +212,7 @@ JSON configuration:
 
 The result:
 
-![example4](/docs/example4.gif)
+![example5](/docs/example5.gif)
 
 ### (5) How to implement a safe, reliable, and user-friendly structure of the elevators?
 
@@ -218,3 +247,5 @@ This question is the goal for the users. The goal of this application is to prov
 - `e.closeDoors(id, floor)` - Oposite function to `e.openDoors(id, floor)`.
 
 - `e.getDoorsPosition(id, floor)` - Returns position of the doors for given elevator at given floor. Zero means closed doors, one means fully opened doors.
+
+- `e.getTime()` - Returns integer that says how many times the function `elevatorSimulationStep(e)` (defined by user) was called.

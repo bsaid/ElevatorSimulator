@@ -14,7 +14,7 @@ Tento simulátor výtahů je napsaný v jazyce Python a používá PyQt5 jako gr
 4. Otestujte spuštění simulátoru pomocí příkladu [example.py](/example.py). Opět můžete zadat následující příkaz do příkazové řádky, pokud se nacházíte ve stejné složce: `python3 ./example.py` Na Windows můžete také v průzkumníku kliknout pravým tlačítkem na soubor [example.py](/example.py) a vybrat položku `Edit in IDLE`. V otevřeném editoru lze kód upravovat nebo spustit pomocí klávesy `F5`.
 5. Mělo by se objevit nové okno. Po kliknutí na tlačítko `Start` byste měli vidět něco takového:
 
-![example4](/docs/example4.gif)
+![example5](/docs/example5.gif)
 
 ## Něco nefunguje
 
@@ -98,11 +98,40 @@ Výsledek:
 
 ### (4) Psaní kódu a spuštění vlastní simulace
 
-Kód simulace píšeme v jazyce Python3. Na začátku potřebujeme importovat knihovnu `import elevators`, potom můžeme zavolat funkci `elevators.runSimulation(configFileName, elevatorSimulationStep)`, kde `configFileName` je jméno soubor s JSON konfigurací struktury výtahů `elevators.json` a `def elevatorSimulationStep(e)` je procedura, která musí být implementována uživatelem. Tato procedura je simulátorem zavolána v každém kroku simulace. Parametr `e` je třída s aktuálními informacemi o všech výtazích a také obsahuje programátorské rozhraní (API) pro interakci s výtahy během simulace.
+Kód simulace píšeme v jazyce Python3. Na začátku potřebujeme importovat knihovnu `import elevators`, potom můžeme zavolat funkci `elevators.runSimulation(configFileName, elevatorSimulationStep)`, kde `configFileName` je jméno souboru s JSON konfigurací struktury výtahů `elevators.json` a `def elevatorSimulationStep(e)` je procedura, která musí být implementována uživatelem. Tato procedura je simulátorem zavolána v každém kroku simulace. Parametr `e` je třída s aktuálními informacemi o všech výtazích a také obsahuje programátorské rozhraní (API) pro interakci s výtahy během simulace.
 
-Ukázka uživatelského kódu:
+Ukázka jednoduchého uživatelského kódu:
 
 [docs/example4.py](/docs/example4.py)
+
+```python
+import elevators
+
+def elevatorSimulationStep(e):
+    if (e.getTime()+10) % 40 < 20:
+        e.speedUp('Alfa')
+    else:
+        e.speedDown('Alfa')
+
+elevators.runSimulation('example4.json', elevatorSimulationStep)
+```
+
+JSON konfigurace:
+
+[docs/example4.json](/docs/example4.json)
+
+```
+{
+  "buttons": [],
+  "elevators": [
+    {"id": "Alfa", "floors": [0,1], "maxSpeed": 1.0, "speedStep": 0.1}
+  ]
+}
+```
+
+Ukázka složitějšího uživatelského kódu:
+
+[docs/example5.py](/docs/example5.py)
 
 ```python
 import elevators
@@ -167,13 +196,13 @@ def elevatorSimulationStep(e):
     processDoors(e)
     printTelemetry(e)
     
-configFileName = 'elevators.json'
+configFileName = 'example5.json'
 elevators.runSimulation(configFileName, elevatorSimulationStep)
 ```
 
 JSON konfigurace:
 
-[docs/example4.json](/docs/example4.json)
+[docs/example5.json](/docs/example5.json)
 
 ```
 {
@@ -191,7 +220,7 @@ JSON konfigurace:
 
 Výsledek:
 
-![example4](/docs/example4.gif)
+![example5](/docs/example5.gif)
 
 ### (5) Jak navrhnout bezpečnou, spolehlivou a uživatelsky přátelskou strukturu výtahů?
 
@@ -226,3 +255,5 @@ Odpověď na tuto otázku zůstavá jako cvičení pro uživatele. Cílem tohoto
 - `e.closeDoors(id, floor)` - Opačná funkce k `e.openDoors(id, floor)`.
 
 - `e.getDoorsPosition(id, floor)` - Vrací desetinné číslo od 0 do 1 pro daný výtah `id` v daném patře `floor`. Nula znamená plně zavřené dveře a jedna znamená plně otevřené dveře.
+
+- `e.getTime()` - Vrací celé číslo, kolikrát již byla zavolána funkce `elevatorSimulationStep(e)` definovaná uživatelem.

@@ -178,6 +178,7 @@ class Simulator:
 
     def __init__(self, configFileName, elevatorsSimulationStep):
         self.elevatorSimulationStep = elevatorsSimulationStep
+        self.simulationTime = 0
         self.queue = Queue()
         with open(configFileName) as f:
             self.config = json.load(f)
@@ -236,6 +237,9 @@ class Simulator:
     def getDoorsPosition(self, id, floor):
         return self.ele[id]['doors'][floor-self.ele[id]['minFloor']]
     
+    def getTime(self):
+        return self.simulationTime
+    
     def i_computeNextState(self):
         self.elevatorSimulationStep(self)
         for id in self.getAllElevators():
@@ -252,6 +256,7 @@ class Simulator:
                 if self.ele[id]['doors'][i] != -1:
                     self.ele[id]['doors'][i] += 0.1*self.ele[id]['doorsDiff'][i]
                     self.ele[id]['doorsDiff'][i] = 0
+        self.simulationTime += 1
 
 
 def runSimulation(configFileName, elevatorsSimulationStep):
