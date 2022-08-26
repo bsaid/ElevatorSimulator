@@ -100,7 +100,7 @@ Výsledek:
 
 Kód simulace píšeme v jazyce Python3. Na začátku potřebujeme importovat knihovnu `import elevators`, potom můžeme zavolat funkci `elevators.runSimulation(configFileName, elevatorSimulationStep)`, kde `configFileName` je jméno souboru s JSON konfigurací struktury výtahů `elevators.json` a `def elevatorSimulationStep(e)` je procedura, která musí být implementována uživatelem. Tato procedura je simulátorem zavolána v každém kroku simulace. Parametr `e` je třída s aktuálními informacemi o všech výtazích a také obsahuje programátorské rozhraní (API) pro interakci s výtahy během simulace.
 
-Ukázka jednoduchého uživatelského kódu:
+#### Ukázka jednoduchého uživatelského kódu:
 
 [docs/example4.py](/docs/example4.py)
 
@@ -129,7 +129,7 @@ JSON konfigurace:
 }
 ```
 
-Ukázka složitějšího uživatelského kódu:
+#### Ukázka složitějšího uživatelského kódu:
 
 [docs/example5.py](/docs/example5.py)
 

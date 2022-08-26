@@ -92,7 +92,7 @@ The result:
 
 The user code is a Python3 file that needs to `import elevators`, and then it has to call `elevators.runSimulation(configFileName, elevatorSimulationStep)` where `configFileName` is the name of the `elevators.json` file and `def elevatorSimulationStep(e)` is a procedure that needs to be implemented by user and that is called inside the simulation loop. The parameter `e` is a class with the current information about all the elevators and it also contains API to interact with the elevators during the simulation.
 
-Example of the simple user code:
+#### Example of the simple user code:
 
 [docs/example4.py](/docs/example4.py)
 
@@ -121,7 +121,7 @@ JSON configuration:
 }
 ```
 
-Example of the more advanced user code:
+#### Example of the more advanced user code:
 
 [docs/example5.py](/docs/example5.py)
 
