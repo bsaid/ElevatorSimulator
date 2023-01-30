@@ -1,0 +1,24 @@
+{
+    "buttons": [
+        { "id": "M&M - KORESPONDENCNI SEMINAR A CASOPIS MFF UK" }
+    ],
+    "elevators": [
+        {"id": "A", "floors": [0, 1, 2, 3, 4, 5, 6, 7], "maxSpeed":1,"speedStep":0.1},
+        {"id": "B", "floors": [0,                6   ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "C", "floors": [0,             5      ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "D", "floors": [0,                6   ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "E", "floors": [0, 1, 2, 3, 4, 5, 6, 7], "maxSpeed":1,"speedStep":0.1},
+        {"id": "F", "floors": [0                     ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "G", "floors": [0,    2, 3,    5, 6   ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "H", "floors": [0, 1,       4,       7], "maxSpeed":1,"speedStep":0.1},
+        {"id": "I", "floors": [0,    2, 3,    5, 6   ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "J", "floors": [0,    2               ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "K", "floors": [0, 1,    3            ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "L", "floors": [0                     ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "M", "floors": [0, 1, 2, 3, 4, 5, 6, 7], "maxSpeed":1,"speedStep":0.1},
+        {"id": "N", "floors": [0,                6   ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "O", "floors": [0,             5      ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "p", "floors": [0,                6   ], "maxSpeed":1,"speedStep":0.1},
+        {"id": "Q", "floors": [0, 1, 2, 3, 4, 5, 6, 7], "maxSpeed":1,"speedStep":0.1}
+    ]
+}
