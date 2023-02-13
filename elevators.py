@@ -250,7 +250,7 @@ class Simulator:
             if self.ele[id]['speed'] > self.ele[id]['maxSpeed']:
                 self.ele[id]['speed'] = self.ele[id]['maxSpeed']
             self.ele[id]['position'] += self.ele[id]['speed']/10
-            if abs(self.ele[id]['speed']) < abs(self.ele[id]['speedStep']):
+            if abs(self.ele[id]['speed']) < abs(self.ele[id]['speedStep']/2):
                 self.ele[id]['speed'] = 0
             for i in range(len(self.ele[id]['doors'])):
                 if self.ele[id]['doors'][i] != -1:
