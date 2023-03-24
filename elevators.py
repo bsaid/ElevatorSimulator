@@ -1,6 +1,7 @@
 import sys
 import json
 from queue import Queue
+from functools import partial
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QTimer, QPointF
 from PyQt5.QtGui import QBrush, QPainter, QPen, QColor
@@ -14,6 +15,7 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QVBoxLayout,
     QWidget,
+    QLabel
 )
 
 
@@ -138,13 +140,32 @@ class Window(QWidget):
         self.toggleTimerButton = QPushButton("Start")
         self.toggleTimerButton.clicked.connect(self.toggleTimer)
         hbox.addWidget(self.toggleTimerButton)
-        self.buttonsComboBox = QComboBox()
+
+        groups = {'ungrouped' : []}
         for b in simulator.getConfig()['buttons']:
-            self.buttonsComboBox.addItem(b['id'])
-        hbox.addWidget(self.buttonsComboBox)
-        self.button = QPushButton("Push selected button")
-        self.button.clicked.connect(self.addEvent)
-        hbox.addWidget(self.button)
+            data = b['id'].split(':', 1)
+            if len(data) == 1:
+                button = QPushButton(b['id'])
+                groups['ungrouped'].append(button)
+                button.clicked.connect(partial(self.simulator.addEvent, eventText=b['id']))
+            else:
+                button = QPushButton(data[1])
+                if not data[0] in groups:
+                    groups[data[0]] = []
+                groups[data[0]].append(button)
+                button.clicked.connect(partial(self.simulator.addEvent, eventText=data[1]))
+        for group_name in groups:
+            if len(groups[group_name]) == 0:
+                continue
+            group_vbox = QVBoxLayout()
+            label = QLabel('<b>' + group_name + '<\\b>')
+            label.setAlignment(Qt.AlignCenter)
+            group_vbox.addWidget(label)
+            for b in groups[group_name]:
+                group_vbox.addWidget(b)
+            group_vbox.addStretch()
+            hbox.addLayout(group_vbox)
+
         self.view = SimulationView(self.scene)
         self.view.setRenderHint(QPainter.Antialiasing)
         vbox = QVBoxLayout(self)
@@ -161,9 +182,6 @@ class Window(QWidget):
             self.elevators[i].setPosition(self.simulator.getPosition(self.elevators[i].ID))
             self.elevators[i].setDoorsPositions(self.simulator.getDoors(self.elevators[i].ID))
         self.scene.update()
-
-    def addEvent(self):
-        self.simulator.addEvent(self.buttonsComboBox.currentText())
     
     def toggleTimer(self):
         if self.timer.remainingTime() > 0:

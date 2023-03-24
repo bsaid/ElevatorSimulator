@@ -75,15 +75,15 @@ Výsledek:
 
 ### (3) Tlačítka pro řízení výtahů
 
-Konfigurační JSON soubor také obsahuje seznam všech tlačítek. Každému tlačítku přiřadíme jeho název `id`, podle kterého jej později identifikujeme. Pro každé tlačítko můžeme nastavit různou barvu, popisek a pozice, kde je umístěno:
+Konfigurační JSON soubor také obsahuje seznam všech tlačítek. Každému tlačítku přiřadíme jeho název `id`, podle kterého jej později identifikujeme. Pro každé tlačítko můžeme nastavit různou barvu, popisek a pozice, kde je umístěno. Také můžeme tlačítka uspořádat do skupin, část před znakem ":" určuje skupinu. Kódu je tlačítko posláno bez skupiny, takže můžete mít jedno tlačítko v několika skupinách (tlačítko s `id` "group:move" bude kódu poslán jako "move", stejně jako `id` "group2:move"):
 
 [docs/example3.json](/docs/example3.json)
 
 ```json
 {
   "buttons": [
-    {"id" : "Up"},
-    {"id" : "Down"},
+    {"id" : "group1:Up"},
+    {"id" : "group1:Down"},
     {"id" : "Stop"}
   ],
   "elevators": [
