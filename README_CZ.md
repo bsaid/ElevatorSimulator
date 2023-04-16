@@ -222,7 +222,38 @@ Výsledek:
 
 ![example5](/docs/example5.gif)
 
-### (5) Jak navrhnout bezpečnou, spolehlivou a uživatelsky přátelskou strukturu výtahů?
+### (5) Testování výtahů s cestujícími
+
+Simulátor výtahů vám pomůže testovat váš kód s cestujícími. Cestující s vaším kódem interagují pomocí eventů. Aby cestující věděli, které tlačítko mají zmáčknout (který event poslat vašemu kódu), musíte napsat funkci `getPassengerEvent(data)`, která přijme jeden argument, `data`, a vrátí `string` event, který má cestující poslat.
+Tuto funkci `getPassengerEvent(data)` poté přidáte jako další argument k `elevators.runSimulation`.
+Argument `data` je `dictionary`, která obsahuje data o cestujícím, kde se nachází (výtah/patro, jeká výtah, jaké patro) a kam chce jet(`targetFloor`). Argument `data` vypadá takto:
+
+```
+{
+	'isInElevator': True/False,
+	'elevator': ID,
+	'currentFloor': CURRENT_FLOOR,
+	'targetFloor': TARGET_FLOOR
+}
+```
+
+Zde je příklad jednoduché `getPassengerEvent` funkce:
+
+```python
+def getPassengerEvent(data):
+    if data['isInElevator']:
+		return "call elevator " + data['elevator'] + " to floor " + data['targetFloor']
+	else: # cestující čeká na výtah v patře data['currentFloor']
+		return "call to floor " + data['currentFloor']
+
+
+elevators.runSimulation(configFileName, elevatorSimulationStep, getPassengerEvent)
+```
+
+Poté, co jste tuto funkci přidali, budou cestující jezdit výtahy. Také se objeví nové UI, pomocí kterého můžete měnit, kolik cestujících přijde a taky zjistíte, jak dlouho průměrně trvá, než se cestující dostane do svého cíle.
+Aby se nezavřeli dveře ve chvíli, kdy je ve dveřích cestující, použijte funkci `e.doorSensor(id)`.
+
+### (6) Jak navrhnout bezpečnou, spolehlivou a uživatelsky přátelskou strukturu výtahů?
 
 Odpověď na tuto otázku zůstavá jako cvičení pro uživatele. Cílem tohoto simulátoru je poskytnout simulované prostředí pro experimentování a procvičování programovaní stavových automatů.
 
@@ -255,5 +286,7 @@ Odpověď na tuto otázku zůstavá jako cvičení pro uživatele. Cílem tohoto
 - `e.closeDoors(id, floor)` - Opačná funkce k `e.openDoors(id, floor)`.
 
 - `e.getDoorsPosition(id, floor)` - Vrací desetinné číslo od 0 do 1 pro daný výtah `id` v daném patře `floor`. Nula znamená plně zavřené dveře a jedna znamená plně otevřené dveře.
+
+- `e.doorSensor(id)` - Vrátí `True` pokud se ve dveřích vyskytuje nějaký cestující.
 
 - `e.getTime()` - Vrací celé číslo, kolikrát již byla zavolána funkce `elevatorSimulationStep(e)` definovaná uživatelem.

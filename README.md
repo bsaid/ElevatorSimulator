@@ -214,7 +214,38 @@ The result:
 
 ![example5](/docs/example5.gif)
 
-### (5) How to implement a safe, reliable, and user-friendly structure of the elevators?
+### (5) Testing elevators with passengers
+
+The elevator simulator implements a passenger system, which allows you to test your elevator code with passengers. Passengers interact with your code through events. For the passengers to know which event to send when, you must create a `getPassengerEvent(data)` function, which you pass as another argument to `elevators.runSimulation`.
+The `getPassengerEvent(data)` must take one argument, `data` and return the event that should be passed to the elevator code. The `data` argument contains data about where the passenger is, where the passenger wants to go, and, if the passenger is in an elevator, which elevator the passenger is in. The `data` argument is a dictionary in this form:
+
+```
+{
+	'isInElevator': True/False,
+	'elevator': ID,
+	'currentFloor': CURRENT_FLOOR,
+	'targetFloor': TARGET_FLOOR
+}
+```
+
+Here is an example of a `getPassengerEvent` function:
+
+```python
+def getPassengerEvent(data):
+    if data['isInElevator']:
+		return "call elevator " + data['elevator'] + " to floor " + data['targetFloor']
+	else: # passenger is waiting for an elevator in a floor
+		return "call to floor " + data['currentFloor']
+
+
+elevators.runSimulation(configFileName, elevatorSimulationStep, getPassengerEvent)
+```
+
+Once this function is passed to the `elevators.runSimulation` function, passengers will start appearing (and, if your elevator code works, using the elevators) and you will be able to use the UI to set how many passengers will be arriving, aswell as see the average transport time.
+You can check wether a passenger is in the doors of an elevator with the `e.doorSensor(id)` function.
+
+
+### (6) How to implement a safe, reliable, and user-friendly structure of the elevators?
 
 This question is the goal for the users. The goal of this application is to provide a simulated environment for experiments and practice of programming automata.
 
@@ -247,5 +278,7 @@ This question is the goal for the users. The goal of this application is to prov
 - `e.closeDoors(id, floor)` - Oposite function to `e.openDoors(id, floor)`.
 
 - `e.getDoorsPosition(id, floor)` - Returns position of the doors for given elevator at given floor. Zero means closed doors, one means fully opened doors.
+
+- `e.doorSensor(id)` - Return `True` if a passenger is in the doors of an elevator, use this to avoid closing elevator doors when a passenger is entering/leaving an elevator.
 
 - `e.getTime()` - Returns integer that says how many times the function `elevatorSimulationStep(e)` (defined by user) was called.

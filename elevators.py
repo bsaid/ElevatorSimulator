@@ -1,6 +1,7 @@
 import sys
 import json
 import random
+import webbrowser
 from queue import Queue
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QTimer, QPointF
@@ -15,20 +16,9 @@ from PyQt5.QtWidgets import (
     QComboBox,
     QVBoxLayout,
     QWidget,
+    QLabel,
+    QSlider
 )
-
-#TODO
-#
-# passengers path through multiple elevators
-# what to do when passenger is in doors but elevator starts moving
-# statistics
-# UI - stats, on/off button, spawn rate options
-# passengers lag behind in moving elevator (due to lerp)
-#
-# docs
-#
-# elevator door tearing when opening/closing
-# max elevator capacity?
 
 class Lerp:
     def __init__(self, lerpTime, time):
@@ -254,6 +244,38 @@ class Window(QWidget):
 
         # Define the UI
         hbox = QHBoxLayout()
+        passengerStatisticsVBox = QVBoxLayout()
+        if self.simulator.getPassengerEvent != None:
+            spawnControllsHBox = QHBoxLayout()
+            label = QLabel("passenger spawn rate: ")
+            label.setFixedSize(110, 20)
+            spawnControllsHBox.addWidget(label)
+            self.passengerSpawnRateSlider = QSlider(Qt.Horizontal)
+            self.passengerSpawnRateSlider.setMinimum(1)
+            self.passengerSpawnRateSlider.setMaximum(30)
+            self.passengerSpawnRateSlider.setFixedSize(100, 20)
+            self.passengerSpawnRateSlider.valueChanged.connect(self.changePassengerSpawnRate)
+            spawnControllsHBox.addWidget(self.passengerSpawnRateSlider)
+            self.spawnRateLabel = QLabel("0.1 /s")
+            self.spawnRateLabel.setFixedSize(35, 20)
+            spawnControllsHBox.addWidget(self.spawnRateLabel)
+            passengerStatisticsVBox.addLayout(spawnControllsHBox)
+            self.totalPassengersLabel = QLabel("total passengers transported: 0")
+            passengerStatisticsVBox.addWidget(self.totalPassengersLabel)
+            self.averageTimeLabel = QLabel("average transport time: 0 s")
+            passengerStatisticsVBox.addWidget(self.averageTimeLabel)
+            self.numberOfPassengers = QLabel("passengers in system: 0")
+            passengerStatisticsVBox.addWidget(self.numberOfPassengers)
+            self.resetStatsButton = QPushButton("Reset")
+            self.resetStatsButton.clicked.connect(self.resetStats)
+            passengerStatisticsVBox.addWidget(self.resetStatsButton)
+        else:
+            label = QLabel("getPassengerEvent() function not implemented")
+            passengerStatisticsVBox.addWidget(label)
+            documentation = QPushButton("documentation")
+            documentation.clicked.connect(lambda: webbrowser.open("https://github.com/bsaid/ElevatorSimulator"))
+            passengerStatisticsVBox.addWidget(documentation)
+        hbox.addLayout(passengerStatisticsVBox)
         self.toggleTimerButton = QPushButton("Start")
         self.toggleTimerButton.clicked.connect(self.toggleTimer)
         hbox.addWidget(self.toggleTimerButton)
@@ -273,10 +295,22 @@ class Window(QWidget):
 
         self.positions = [0,0]
     
+    def changePassengerSpawnRate(self, rate):
+        self.simulator.passengerManager.passengerSpawnRate = round(100 / rate)
+        self.spawnRateLabel.setText(str(round(rate * 0.1, 2)) + "/s")
+
+    def resetStats(self):
+        self.simulator.passengerManager.statistics = {'total passengers transported': 0, 'average transport time': 0}
+        self.simulator.passengers = []
+        for id in self.simulator.ele:
+            elevator = self.simulator.ele[id]
+            elevator['passengerInDoors'] = False
+            elevator['passengers'] = []
+
     def nextStep(self):
         self.simulator.i_computeNextState()
 
-        while(len(self.passengerPool) < len(self.simulator.passengers)):
+        while(len(self.passengerPool) < len(self.simulator.passengers)): # using a passenger pool rather than creating and deleting passengers, because pyqt crashed when trying to remove a passenger from the scene
             newPassenger = PassengerItem()
             self.passengerPool.append(newPassenger)
             self.scene.addItem(newPassenger)
@@ -289,6 +323,12 @@ class Window(QWidget):
                 self.passengerPool[i].updatePassenger(self.simulator.passengers[i], self.simulator)
             else:
                 self.passengerPool[i].updatePassenger(False, self.simulator)
+
+        if self.simulator.getPassengerEvent != None:
+            self.totalPassengersLabel.setText('total passengers transported: ' + str(self.simulator.passengerManager.statistics['total passengers transported']))
+            self.averageTimeLabel.setText('average transport time: ' + str(round(self.simulator.passengerManager.statistics['average transport time']) / 100.0) + " s")
+            self.numberOfPassengers.setText('passengers in system: ' + str(len(self.simulator.passengers)))
+
         self.scene.update()
 
     def addEvent(self):
@@ -299,7 +339,7 @@ class Window(QWidget):
             self.timer.stop()
             self.toggleTimerButton.setText('Start')
         else:
-            self.timer.start(3)
+            self.timer.start(100)
             self.toggleTimerButton.setText('Stop')
 
 class Simulator:
@@ -376,6 +416,8 @@ class Simulator:
         self.ele[id]['doorsDiff'][floor-self.ele[id]['minFloor']] = -1
     
     def getDoorsPosition(self, id, floor):
+        if floor-self.ele[id]['minFloor'] < 0 or floor-self.ele[id]['minFloor'] >= len(self.ele[id]['doors']):
+            return -1
         return self.ele[id]['doors'][floor-self.ele[id]['minFloor']]
     
     def getTime(self):
@@ -408,7 +450,8 @@ class Simulator:
 class PassengerManager:
     def __init__(self, simulator):
         self.simulator = simulator
-        self.passengerSpawnRate = 100
+        self.passengerSpawnRate = 10000
+        self.statistics = {'total passengers transported': 0, 'average transport time': 0}
 
     def spawnPassengers(self):
         if self.simulator.simulationTime % self.passengerSpawnRate == 0:
@@ -420,14 +463,13 @@ class PassengerManager:
                 if i >= 100:
                     return
                 goalFloor = random.choice(self.simulator.accesibleFloors)
-            passenger = {'passengerId': random.randint(0, 10000000), 'inElevator': False, 'inDoors': False, 'doorsTimer': 0, 'elevatorId': '', 'currentFloor': startFloor, 'targetFloor': goalFloor, 'goalFloor': goalFloor}
+            passenger = {'inElevator': False, 'inDoors': False, 'doorsTimer': 0, 'elevatorId': '', 'currentFloor': startFloor, 'targetFloor': goalFloor, 'goalFloor': goalFloor, 'startTime': self.simulator.simulationTime}
+            self.getNextTargetFloor(passenger)
             self.simulator.addEvent(self.simulator.getPassengerEvent({'isInElevator': passenger['inElevator'], 'elevator': passenger['elevatorId'], 'currentFloor': passenger['currentFloor'], 'targetFloor': passenger['targetFloor']}))
             self.simulator.passengers.append(passenger)
 
     def computePassengers(self):
         if self.simulator.getPassengerEvent == None:
-            return
-        if len(self.simulator.accesibleFloors) <= 1:
             return
         self.spawnPassengers()
 
@@ -436,31 +478,38 @@ class PassengerManager:
             passenger = self.simulator.passengers[i]
             if passenger['inDoors']:
                 elevator = self.simulator.ele[passenger['elevatorId']]
-                if elevator['doors'][passenger['currentFloor']] > 0.95: #passenger only enters/exits the elevator when doors are fully opened (if they are not, the passenger will wait until they are)
+                if elevator['speed'] != 0: #passenger goes back to the floor
+                    passenger['inElevator'] = False
+                    passenger['inDoors'] = False
+                    elevator['passengerInDoors'] = False
+                    elevator['passengers'].remove(passenger)
+                    self.simulator.addEvent(self.simulator.getPassengerEvent({'isInElevator': passenger['inElevator'], 'elevator': passenger['elevatorId'], 'currentFloor': passenger['currentFloor'], 'targetFloor': passenger['targetFloor']}))
+                    continue
+                if self.simulator.getDoorsPosition(passenger['elevatorId'], passenger['currentFloor']) > 0.95: #passenger only enters/exits the elevator when doors are fully opened (if they are not, the passenger will wait until they are)
                     passenger['doorsTimer'] -= 1
                 if passenger['doorsTimer'] <= 0:
                     passenger['inElevator'] = not passenger['inElevator']
                     passenger['inDoors'] = False
                     elevator['passengerInDoors'] = False
                     if passenger['currentFloor'] == passenger['goalFloor'] and passenger['inElevator'] == False:
+                        self.statistics['average transport time'] = (self.statistics['average transport time'] * self.statistics['total passengers transported'] + (self.simulator.simulationTime - passenger['startTime'])) / (self.statistics['total passengers transported'] + 1)
+                        self.statistics['total passengers transported'] += 1
                         self.simulator.passengers.remove(passenger)
-                        i -= 1
                         continue
                     self.simulator.addEvent(self.simulator.getPassengerEvent({'isInElevator': passenger['inElevator'], 'elevator': passenger['elevatorId'], 'currentFloor': passenger['currentFloor'], 'targetFloor': passenger['targetFloor']}))
             elif passenger['inElevator']:
                 elevator = self.simulator.ele[passenger['elevatorId']]
-                if elevator['speed'] == 0 and abs(elevator['position'] - passenger['targetFloor']) < 0.05 and elevator['doors'][passenger['targetFloor']] > 0.95 and not elevator['passengerInDoors']:
+                if elevator['speed'] == 0 and abs(elevator['position'] - passenger['targetFloor']) < 0.05 and self.simulator.getDoorsPosition(passenger['elevatorId'], passenger['targetFloor']) > 0.95 and (not elevator['passengerInDoors']):
                     passenger['inDoors'] = True
                     elevator['passengerInDoors'] = True
                     passenger['currentFloor'] = passenger['targetFloor']
                     passenger['doorsTimer'] = 15
-                    #GET PASSENGER NEXT TARGET FLOOR#########################################
-                    passenger['targetFloor'] = passenger['goalFloor']
+                    self.getNextTargetFloor(passenger)
                     elevator['passengers'].remove(passenger)
             else: #in floor
                 availableElevatorIds = []
                 for j in self.simulator.getAllElevators():
-                    if self.simulator.ele[j]['speed'] == 0 and abs(self.simulator.ele[j]['position'] - passenger['currentFloor']) < 0.05 and self.simulator.ele[j]['doors'][passenger['currentFloor']] > 0.95 and not self.simulator.ele[j]['passengerInDoors']:
+                    if self.simulator.ele[j]['speed'] == 0 and abs(self.simulator.ele[j]['position'] - passenger['currentFloor']) < 0.05 and self.simulator.getDoorsPosition(j, passenger['currentFloor']) > 0.95 and not self.simulator.ele[j]['passengerInDoors'] and passenger['targetFloor'] in self.simulator.ele[j]['floors']:
                         availableElevatorIds.append(j)
                 if len(availableElevatorIds) != 0:
                     targetElevatorId = random.choice(availableElevatorIds)
@@ -470,6 +519,28 @@ class PassengerManager:
                     self.simulator.ele[targetElevatorId]['passengerInDoors'] = True
                     self.simulator.ele[targetElevatorId]['passengers'].append(passenger)
             i += 1
+    
+    def getNextTargetFloor(self, passenger):
+        floorsToSearch = []
+        for id in self.simulator.ele:
+            elevator = self.simulator.ele[id]
+            if passenger['currentFloor'] in elevator['floors']:
+                for f in elevator['floors']:
+                    if not f in floorsToSearch:
+                        floorsToSearch.append(f)
+
+        targetFloor = None
+        targetFloorDistance = None
+        for floor in floorsToSearch:
+            if floor == passenger['currentFloor']:
+                continue
+            if not self.isFloorAccesible(floor, passenger['currentFloor']):
+                continue
+            distance = self.distanceBetweenFloors(floor, passenger['goalFloor'])
+            if targetFloorDistance == None or targetFloorDistance > distance or (targetFloorDistance == distance and abs(targetFloor - passenger['currentFloor']) > abs(floor - passenger['currentFloor'])): #choose the floor has the smallest "distance" to the target floor, if "distance" is the same, choose whichever floor is closer
+                targetFloor = floor
+                targetFloorDistance = distance
+        passenger['targetFloor'] = targetFloor
 
     def isFloorAccesible(self, startFloor, endFloor):
         accesibleFloors = [startFloor]
@@ -486,6 +557,31 @@ class PassengerManager:
 
         return endFloor in accesibleFloors
 
+    def distanceBetweenFloors(self, startfloor, endfloor): # how many elevators the passenger needs to go through to get to the end floor
+        if startfloor == endfloor:
+            return 0
+
+        checkedFloors = [] # floors that have been checked (distance to end floor < 'distance')
+        floorsToCheck = [startfloor] # floors that we are checking (distance to end floor == 'distance')
+        foundFloors = [] # floors that we "found" through checking, will be 'floorToCheck' once we finish checking (distance to end floor == 'distance' + 1)
+        distance = 0
+
+        while True:
+            for floor in floorsToCheck:
+                if floor == endfloor:
+                    return distance
+                for id in self.simulator.ele:
+                    elevator = self.simulator.ele[id]
+                    if floor in elevator['floors']:
+                        for f in elevator['floors']:
+                            if (not f in checkedFloors) and (not f in floorsToCheck) and (not f in foundFloors):
+                                foundFloors.append(f)
+            for floor in floorsToCheck:
+                checkedFloors.append(floor)
+            floorsToCheck = foundFloors.copy()
+            foundFloors = []
+            distance += 1
+
 
 def runSimulation(configFileName, elevatorsSimulationStep, getPassengerEvent=None):
     simulator = Simulator(configFileName, elevatorsSimulationStep, getPassengerEvent)
@@ -493,6 +589,8 @@ def runSimulation(configFileName, elevatorsSimulationStep, getPassengerEvent=Non
     w = Window(simulator)
     w.show()
     app.exec()
+
+    
 
 
 if __name__ == '__main__':
