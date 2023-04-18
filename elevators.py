@@ -240,6 +240,10 @@ class Simulator:
     def getTime(self):
         return self.simulationTime
     
+    def displayQueue(self):
+        q=list(self.queue.queue)
+        return q
+    
     def i_computeNextState(self):
         self.elevatorSimulationStep(self)
         for id in self.getAllElevators():
