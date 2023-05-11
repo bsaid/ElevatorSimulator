@@ -67,15 +67,15 @@ The result:
 
 ### (3) Buttons to control the elevators
 
-The JSON file also contains a list of all buttons. Currently, we will assign only `id` for each button, but we can also set their color, caption, and where they are displayed in the simulation scene:
+The JSON file also contains a list of all buttons. Currently, we will assign only `id` for each button, but we can also set their color, caption, and where they are displayed in the simulation scene, we can also group the buttons for better organisation in the simulator (the part od the id before the ':' symbol is the group) events are passed to the code without the group, so you can have one button in multiple groups (pressing the button with `id` "group:move" will pass the event "move", so will the `id` "group2:move"):
 
 [docs/example3.json](/docs/example3.json)
 
 ```json
 {
   "buttons": [
-    {"id" : "Up"},
-    {"id" : "Down"},
+    {"id" : "group1:Up"},
+    {"id" : "group1:Down"},
     {"id" : "Stop"}
   ],
   "elevators": [
