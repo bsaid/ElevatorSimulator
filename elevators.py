@@ -286,7 +286,6 @@ class Window(QWidget):
         self.toggleTimerButton = QPushButton()
         self.toggleTimerButton.setIcon(QIcon("icons/play_icon.png"))
         self.toggleTimerButton.clicked.connect(self.toggleTimer)
-        hbox.addWidget(self.toggleTimerButton)
         groups = {'ungrouped' : []}
         self.slowTime = QPushButton()
         self.slowTime.setIcon(QIcon("icons/slow_down_icon.png"))
