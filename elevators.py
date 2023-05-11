@@ -4,7 +4,7 @@ from queue import Queue
 from functools import partial
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QTimer, QPointF
-from PyQt5.QtGui import QBrush, QPainter, QPen, QColor
+from PyQt5.QtGui import QBrush, QPainter, QPen, QColor, QIcon
 from PyQt5.QtWidgets import (
     QApplication,
     QGraphicsItem,
@@ -134,14 +134,36 @@ class Window(QWidget):
         # Define the main simulation timer
         self.timer = QTimer()
         self.timer.timeout.connect(self.nextStep)
+        self.timer.setInterval(100)
+        self.timeScale = 1.0
 
         # Define the UI
         hbox = QHBoxLayout()
-        self.toggleTimerButton = QPushButton("Start")
+        timeControlVBox = QVBoxLayout()
+        timeControlButtonsHBox = QHBoxLayout()
+        timeScaleTextHBox = QHBoxLayout()
+        self.toggleTimerButton = QPushButton()
+        self.toggleTimerButton.setIcon(QIcon("icons/play_icon.png"))
         self.toggleTimerButton.clicked.connect(self.toggleTimer)
         hbox.addWidget(self.toggleTimerButton)
-
         groups = {'ungrouped' : []}
+        self.slowTime = QPushButton()
+        self.slowTime.setIcon(QIcon("icons/slow_down_icon.png"))
+        self.slowTime.clicked.connect(self.slowDownTime)
+        self.fastTime = QPushButton()
+        self.fastTime.setIcon(QIcon("icons/fast_forward_icon.png"))
+        self.fastTime.clicked.connect(self.speedUpTime)
+        self.timeScaleLabel = QLabel("speed: 1.0x")
+        timeControlButtonsHBox.addWidget(self.slowTime)
+        timeControlButtonsHBox.addWidget(self.toggleTimerButton)
+        timeControlButtonsHBox.addWidget(self.fastTime)
+        timeControlVBox.addLayout(timeControlButtonsHBox)
+        timeScaleTextHBox.addStretch()
+        timeScaleTextHBox.addWidget(self.timeScaleLabel)
+        timeScaleTextHBox.addStretch()
+        timeControlVBox.addLayout(timeScaleTextHBox)
+        hbox.addLayout(timeControlVBox)
+        self.buttonsComboBox = QComboBox()
         for b in simulator.getConfig()['buttons']:
             data = b['id'].split(':', 1)
             if len(data) == 1:
@@ -183,13 +205,30 @@ class Window(QWidget):
             self.elevators[i].setDoorsPositions(self.simulator.getDoors(self.elevators[i].ID))
         self.scene.update()
     
+    def slowDownTime(self):
+        self.timeScale /= 2
+        if self.timeScale < 1/8.0:
+           self.timeScale = 1/8.0
+        self.timer.setInterval(100 / self.timeScale)
+        self.updateTimeScaleLabel()
+    
+    def speedUpTime(self):
+       self.timeScale *= 2
+       if self.timeScale > 64.0:
+           self.timeScale = 64.0
+       self.timer.setInterval(100 / self.timeScale)
+       self.updateTimeScaleLabel()
+
+    def updateTimeScaleLabel(self):
+        self.timeScaleLabel.setText("speed: " + str(self.timeScale) + "x")
+
     def toggleTimer(self):
-        if self.timer.remainingTime() > 0:
+        if self.timer.isActive():
             self.timer.stop()
-            self.toggleTimerButton.setText('Start')
+            self.toggleTimerButton.setIcon(QIcon("icons/play_icon.png"))
         else:
-            self.timer.start(100)
-            self.toggleTimerButton.setText('Stop')
+            self.timer.start()
+            self.toggleTimerButton.setIcon(QIcon("icons/pause_icon.png"))
 
 class Simulator:
     ELEVATOR_WIDTH = 200
@@ -257,6 +296,10 @@ class Simulator:
     
     def getTime(self):
         return self.simulationTime
+    
+    def displayQueue(self):
+        q=list(self.queue.queue)
+        return q
     
     def i_computeNextState(self):
         self.elevatorSimulationStep(self)
