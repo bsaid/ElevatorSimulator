@@ -377,14 +377,14 @@ class Window(QWidget):
         self.timeScale /= 2
         if self.timeScale < 1/8.0:
            self.timeScale = 1/8.0
-        self.timer.setInterval(100 / self.timeScale)
+        self.timer.setInterval(int(100 / self.timeScale))
         self.updateTimeScaleLabel()
     
     def speedUpTime(self):
        self.timeScale *= 2
        if self.timeScale > 64.0:
            self.timeScale = 64.0
-       self.timer.setInterval(100 / self.timeScale)
+       self.timer.setInterval(int(100 / self.timeScale))
        self.updateTimeScaleLabel()
 
     def updateTimeScaleLabel(self):
