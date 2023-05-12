@@ -37,6 +37,8 @@ class SimulationView(QGraphicsView):
         super(SimulationView, self).__init__(parent)
         self.scale(1,-1)
         self._zoom = 0
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
     
     def reset_fit(self):
         r = self.scene().itemsBoundingRect()
@@ -45,6 +47,10 @@ class SimulationView(QGraphicsView):
         self.fitInView(r, Qt.KeepAspectRatio)
         self._zoom = 0
         self.scale(1, -1)
+
+    def showEvent(self, event):
+        if not event.spontaneous():
+            self.reset_fit()
 
     def wheelEvent(self, event):
         if event.angleDelta().y() > 0:
