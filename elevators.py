@@ -60,8 +60,11 @@ class SimulationView(QGraphicsView):
             factor = 0.8
             self._zoom -= 1
         if self._zoom > 0:
-            self.centerOn(QPointF( event.position().x(), -event.position().y() ))
+            pos1 = self.mapToScene(int(event.position().x()), int(event.position().y()))# mouse position before scaling
             self.scale(factor, factor)
+            pos2 = self.mapToScene(int(event.position().x()), int(event.position().y()))# mouse position after scaling
+            center = self.mapToScene(self.viewport().rect().center()) + (pos1-pos2)# move the view such that the mouse stay in the same place
+            self.centerOn(center)
         elif self._zoom == 0:
             self.reset_fit()
         else:
