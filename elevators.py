@@ -37,6 +37,8 @@ class SimulationView(QGraphicsView):
         super(SimulationView, self).__init__(parent)
         self.scale(1,-1)
         self._zoom = 0
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
     
     def reset_fit(self):
         r = self.scene().itemsBoundingRect()
@@ -46,6 +48,10 @@ class SimulationView(QGraphicsView):
         self._zoom = 0
         self.scale(1, -1)
 
+    def showEvent(self, event):
+        if not event.spontaneous():
+            self.reset_fit()
+
     def wheelEvent(self, event):
         if event.angleDelta().y() > 0:
             factor = 1.25
@@ -54,8 +60,11 @@ class SimulationView(QGraphicsView):
             factor = 0.8
             self._zoom -= 1
         if self._zoom > 0:
-            self.centerOn(QPointF( event.position().x(), -event.position().y() ))
+            pos1 = self.mapToScene(int(event.position().x()), int(event.position().y()))# mouse position before scaling
             self.scale(factor, factor)
+            pos2 = self.mapToScene(int(event.position().x()), int(event.position().y()))# mouse position after scaling
+            center = self.mapToScene(self.viewport().rect().center()) + (pos1-pos2)# move the view such that the mouse stay in the same place
+            self.centerOn(center)
         elif self._zoom == 0:
             self.reset_fit()
         else:
