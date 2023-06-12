@@ -313,6 +313,7 @@ class Window(QWidget):
         timeControlVBox.addLayout(timeScaleTextHBox)
         hbox.addLayout(timeControlVBox)
         self.buttonsComboBox = QComboBox()
+        group_vbox = QVBoxLayout()
         for b in simulator.getConfig()['buttons']:
             data = b['id'].split(':', 1)
             if len(data) == 1:
@@ -328,21 +329,21 @@ class Window(QWidget):
         for group_name in groups:
             if len(groups[group_name]) == 0:
                 continue
-            group_vbox = QVBoxLayout()
             label = QLabel('<b>' + group_name + '<\\b>')
             label.setAlignment(Qt.AlignCenter)
             group_vbox.addWidget(label)
             for b in groups[group_name]:
                 group_vbox.addWidget(b)
             group_vbox.addStretch()
-            hbox.addLayout(group_vbox)
-
         self.view = SimulationView(self.scene)
         self.view.setRenderHint(QPainter.Antialiasing)
-        vbox = QVBoxLayout(self)
+        vbox = QVBoxLayout()
         vbox.addLayout(hbox)
         vbox.addWidget(self.view)
-        self.setLayout(vbox)
+        globalLayout = QHBoxLayout(self)
+        globalLayout.addLayout(vbox)
+        globalLayout.addLayout(group_vbox)
+        self.setLayout(globalLayout)
 
         self.positions = [0,0]
     
