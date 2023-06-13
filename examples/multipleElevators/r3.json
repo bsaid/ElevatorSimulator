@@ -1,0 +1,47 @@
+{
+   "buttons": [
+	{"id" : "DoPatra0", "_comment1" : "v prizemi"},
+	{"id" : "DoPatra1","_comment2" : "v prvnim patre"},
+	{"id" : "DoPatra2", "_comment3" : "v druhem patre"},
+	{"id" : "DoPatra3", "_comment4" : "v tretim patre"},
+	{"id" : "DoPatra4", "_comment5" : "v ctvrtem patre"},
+
+	{"id" : "AlfaDo0", "_comment6" : "ve vytahu Alfa"},
+	{"id" : "AlfaDo1", "_comment7" : "ve vytahu Alfa"},
+	{"id" : "AlfaDo2", "_comment8" : "ve vytahu Alfa"},
+
+	{"id" : "BetaDo0", "_comment9" : "ve vytahu Beta"},
+	{"id" : "BetaDo1", "_comment10" : "ve vytahu Beta"},
+	{"id" : "BetaDo2", "_comment11" : "ve vytahu Beta"},
+
+	{"id" : "GamaDo0", "_comment12" : "ve vytahu Gama"},
+	{"id" : "GamaDo1", "_comment13" : "ve vytahu Gama"},
+	{"id" : "GamaDo2", "_comment14" : "ve vytahu Gama"},
+	{"id" : "GamaDo3", "_comment15" : "ve vytahu Gama"},
+	{"id" : "GamaDo4", "_comment16" : "ve vytahu Gama"}
+
+],
+   "elevators": [
+     {
+ 	  "id": "Alfa",
+ 	  "floors": [1,2,0],
+ 	  "maxSpeed": 0.1,
+ 	  "speedStep": 0.05
+ 	},
+
+     {
+ 	  "id": "Beta",
+ 	  "floors": [1,2,0],
+ 	  "maxSpeed": 0.1,
+ 	  "speedStep": 0.05
+ 	},
+
+     {
+ 	  "id": "Gama",
+ 	  "floors": [1,2,3,4,0],
+ 	  "maxSpeed": 0.1,
+ 	  "speedStep": 0.05
+ 	}
+    ]
+}
+

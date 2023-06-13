@@ -1,0 +1,13 @@
+{
+  "buttons": [
+    {"id" : "p0"},
+    {"id" : "p1"},
+    {"id" : "p2"},
+    {"id" : "p3"},
+    {"id" : "<I>"},
+    {"id" : ">I<"}
+  ],
+  "elevators": [
+    {"id": "lift", "floors": [0,1,2,3], "maxSpeed": 0.5, "speedStep": 0.05}
+  ]
+}

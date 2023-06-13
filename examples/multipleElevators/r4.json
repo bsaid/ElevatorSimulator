@@ -1,0 +1,35 @@
+{
+    "elevators": [
+    {"id": "v0", "floors":[0, 1, 2, 3, 4],  "maxSpeed": 0.5, "speedStep": 0.1},
+    {"id": "v1", "floors":[0, 1, 2],        "maxSpeed": 0.5, "speedStep": 0.1},
+    {"id": "v2", "floors":[0, 1, 2],        "maxSpeed": 0.5, "speedStep": 0.1}
+    ],
+    
+    "buttons": [
+    {"id": "vytah do 0", "comment": "v kazdem patre se nachazi tlacitko, ktere privola libovolny vytah"},
+    {"id": "vytah do 1"},
+    {"id": "vytah do 2"},
+    {"id": "vytah do 3"},
+    {"id": "vytah do 4"},
+
+    {"id": "vytah do 0, horni patra", "comment": "v kazdem patre se nachazi tlacitko, ktere privola vytah, ktery je schopen jezdit do hornich dvou pater"},
+    {"id": "vytah do 1, horni patra"},
+    {"id": "vytah do 2, horni patra"},
+    {"id": "vytah do 3, horni patra"},
+    {"id": "vytah do 4, horni patra"},
+
+    {"id": "v0: 0", "comment": "ve vytahu v1 se nachazi 5 tlacitek, jedno pro kazde patro"},
+    {"id": "v0: 1"},
+    {"id": "v0: 2"},
+    {"id": "v0: 3"},
+    {"id": "v0: 4"},
+
+    {"id": "v1: 0", "comment": "ve vytahu v2 se nachazi 3 tlacitka, a to pro patra 0, 1, 2"},
+    {"id": "v1: 1"},
+    {"id": "v1: 2"},
+
+    {"id": "v2: 0", "comment": "ve vytahu v3 se nachazi 3 tlacitka, a to pro patra 0, 1, 2"},
+    {"id": "v2: 1"},
+    {"id": "v2: 2"}
+    ]
+}

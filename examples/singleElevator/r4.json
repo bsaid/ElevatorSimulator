@@ -1,0 +1,16 @@
+{
+    "buttons": [
+    {"id":"otevrit"},
+    {"id":"zavrit"},
+    {"id":"zrychli"},
+    {"id":"zpomal"},
+    {"id":"P-1"},
+    {"id":"P0"},
+    {"id":"P1"},
+    {"id":"P2"},
+    {"id":"P3"}
+    ],
+"elevators": [
+    {"id": "Alfa", "floors": [-1,0,1,2,3], "maxSpeed": 1, "speedStep": 0.05}
+  ]
+}

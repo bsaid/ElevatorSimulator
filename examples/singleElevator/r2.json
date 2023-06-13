@@ -1,0 +1,18 @@
+{
+  "_comment": "lze pritad libovolny pocet pater, staci to patro pridat do floors v tom vytahu a pote i tlacitko s id ve formatu {cisloPatra}.jakykolivText a v simulatoru bude plne fungovat :)",
+  "buttons": [
+    {"id": "-1.patro"},
+    {"id": "prizemi"},
+    {"id": "1.patro"},
+    {"id": "2.patro"},
+    {"id": "3.patro"},
+    {"id": "4.patro"},
+    {"id": "5.patro"},
+    {"id": "11.patro"},
+    {"id": "zavrit dvere"},
+    {"id": "otevrit dvere"}
+  ],
+    "elevators":[
+      {"id": "A", "floors": [-1,0,1,2,3,4,5,11], "maxSpeed": 1.0, "speedStep": 0.1}
+    ]
+  }

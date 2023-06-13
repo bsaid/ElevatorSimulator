@@ -1,0 +1,15 @@
+{
+    "buttons": [
+      {"id" : "prizemi"},
+      {"id" : "1.patro"},
+      {"id" : "2.patro"},
+      {"id" : "3.patro"},
+      {"id" : "zavri"},
+      {"id" : "otevri"}
+
+    ],
+    "elevators": [
+      {"id": "Vytah1", "floors": [0,1,2,3], "maxSpeed": 2.0, "speedStep": 0.2}
+        ]
+  }
+  

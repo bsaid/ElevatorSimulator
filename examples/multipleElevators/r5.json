@@ -1,0 +1,34 @@
+{
+  "_comment": "V ID tlacitek pro patra je prvni cislo cilove patro a druhe cislo patro, kde tlacitko bylo stisknuto",
+  "buttons": [
+    {"id" : "-1_0"},
+    {"id" : "-1_1"},
+    {"id" : "-1_2"},
+    {"id" : "0_-1"},
+    {"id" : "0_1"},
+    {"id" : "0_2"},
+    {"id" : "0_3"},
+    {"id" : "1_-1"},
+    {"id" : "1_0"},
+    {"id" : "1_2"},
+    {"id" : "1_3"},
+    {"id" : "2_-1"},
+    {"id" : "2_0"},
+    {"id" : "2_1"},
+    {"id" : "2_3"},
+    {"id" : "3_0"},
+    {"id" : "3_1"},
+    {"id" : "3_2"},
+    {"id" : "Open_A"},
+    {"id" : "Open_B"},
+    {"id" : "Open_C"},
+    {"id" : "Close_A"},
+    {"id" : "Close_B"},
+    {"id" : "Close_C"}
+  ],
+  "elevators": [
+    {"id": "A", "floors": [-1,0,1,2], "maxSpeed": 1.0, "speedStep": 0.1},
+    {"id": "B", "floors": [0,1,2], "maxSpeed": 1.0, "speedStep": 0.1},
+    {"id": "C", "floors": [0,1,2,3], "maxSpeed": 1.0, "speedStep": 0.1}
+  ]
+}

@@ -1,0 +1,19 @@
+{
+	"buttons": [
+		{ "id": "0.patro" },
+		{ "id": "1.patro" },
+		{ "id": "2.patro" },
+		{ "id": "3.patro" },
+		{ "id": "4.patro" },
+		{ "id": "otevreni dveri" },
+		{ "id": "zavreni dveri" }
+	],
+	"elevators": [
+		{
+			"id": "A",
+			"floors": [ 0, 1, 2, 3, 4 ],
+			"maxSpeed": 1.0,
+			"speedStep": 0.05
+		}
+	]
+}

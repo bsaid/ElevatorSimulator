@@ -1,0 +1,14 @@
+{
+  "buttons": [
+    {"id" : "0"},
+    {"id" : "1"},
+    {"id" : "2"},
+    {"id" : "3"},
+    {"id" : "4"},
+    {"id" : "Open"},
+    {"id" : "Close"}
+  ],
+  "elevators": [
+    {"id": "A", "floors": [0,1,2,3,4], "maxSpeed": 1.0, "speedStep": 0.1}
+  ]
+}

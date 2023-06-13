@@ -1,0 +1,38 @@
+{
+  "_comment": "lze pritad libovolny pocet pater, staci to patro pridat do floors v tom vytahu a pote i tlacitko s id ve formatu {cisloPatra}.jakykolivText a v simulatoru bude plne fungovat",
+  "_comment2": "u tlacitka na oterveri a zavreni dveri se zavrou pouze dvere vytahu, ktery naposled nekdo privolal (viz komentar 5)",
+  "_comment3": "mozna jste si vsiml, ze python kod je z vetsiny zrecyklovany z minuleho cisla, vetsinu potrebnych funkci uz jsem tam mel, stacilo jen pridat ovladani pro vice vytahu :)",
+  "_comment4": "stejne jako libovolny pocet pater jde pridat (skoro) libovolny pocet vytahu (jeho id musi mit 1 znak, ale i to by slo zmenit) s libovolnymi dostupnymi patry, vse funguje bez upravy programu (klidne muze byt pridan napriklad vytah D, ktery muze jen do -2 patra a vytahy by furt jezdily optimalne)",
+  "_comment5": "sly by jednoduse udelat i tlacitka na ovladani dveri v kazdem vytahu, ale nesly by pak libovolne pridavat vytahy bez uprav programu a tlacitkove menu by bylo vyspamovano ovladanim dveri, takze jsem to nechal na ovladani posledniho pouziteho vytahu :) ",
+  "_comment6": "tlacitka uvnitr vytahu jsem udelal jenom 2 jako proof ze funguji, zase se mi nechtelo vyspamovavat tlacitkove menu :)",
+  "buttons": [
+    {"id": "-1.patro (tlacitko k privolani u vsech vytahu v -1. patre)"}, 
+    {"id": "prizemi (tlacitko k privolani u vsech vytahu v prizemi)"},
+    {"id": "1.patro (tlacitko k privolani u vsech vytahu v 1. patre)"},
+    {"id": "2.patro (tlacitko k privolani u vsech vytahu v 2. patre)"},
+    {"id": "3.patro (tlacitko k privolani u vsech vytahu v 3. patre)"},
+    {"id": "4.patro (tlacitko k privolani u vsech vytahu v 4. patre)"},
+    {"id": "5.patro (tlacitko k privolani u vsech vytahu v 5. patre)"},
+    {"id": "6.patro (tlacitko k privolani u vytahu B v 6. patre)"},
+    {"id": "7.patro (tlacitko k privolani u vytahu B v 7. patre)"},
+    {"id": "8.patro (tlacitko k privolani u vytahu C v 8. patre)"},
+    {"id": "9.patro (tlacitko k privolani u vytahu C v 9. patre)"},
+    {"id": "10.patro (tlacitko k privolani u vytahu A a B v 10. patre)"},
+    {"id": "1A.patro, vytah (tlacitko uvnitr vytahu A)"},
+    {"id": "2B.patro, vytah (tlacitko uvnitr vytahu B)"},
+    {"id": "-1A"},
+    {"id": "0A"},
+    {"id": "2A"},
+    {"id": "3A"},
+    {"id": "4A"},
+    {"id": "5A"},
+    {"id": "10A"},
+    {"id": "zavrit dvere (uvnitr kazdeho vytahu)"}, 
+    {"id": "otevrit dvere (uvnitr kazdeho vytahu)"} 
+  ],
+    "elevators":[
+      {"id": "A", "floors": [-1,0,1,2,3,4,5, 10], "maxSpeed": 1.0, "speedStep": 0.1},
+      {"id": "B", "floors": [-1,0,1,2,3,4,5,6,7, 10], "maxSpeed": 1.0, "speedStep": 0.1},
+      {"id": "C", "floors": [-1,0,1,2,3,4,5,8,9], "maxSpeed": 1.0, "speedStep": 0.1}
+    ]
+  }

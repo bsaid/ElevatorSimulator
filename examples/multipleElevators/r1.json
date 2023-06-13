@@ -1,0 +1,59 @@
+{
+	"buttons": [
+		{ "id": "call floor 0" },
+		{ "id": "call floor 1" },
+		{ "id": "call floor 2" },
+		{ "id": "call floor 3" },
+		{ "id": "call floor 4" },
+		{ "id": "call floor 5" },
+		{ "id": "call floor 6" },
+		{ "id": "call floor 0 (roof)" },
+		{ "id": "call floor 1 (roof)" },
+		{ "id": "call floor 2 (roof)" },
+		{ "id": "call floor 3 (roof)" },
+		{ "id": "call floor 4 (roof)" },
+		{ "id": "elevator A floor 0" },
+		{ "id": "elevator A floor 1" },
+		{ "id": "elevator A floor 2" },
+		{ "id": "elevator A floor 3" },
+		{ "id": "elevator A floor 4" },
+		{ "id": "elevator A floor 5" },
+		{ "id": "elevator A floor 6" },
+		{ "id": "elevator B floor 0" },
+		{ "id": "elevator B floor 1" },
+		{ "id": "elevator B floor 2" },
+		{ "id": "elevator B floor 3" },
+		{ "id": "elevator B floor 4" },
+		{ "id": "elevator C floor 0" },
+		{ "id": "elevator C floor 1" },
+		{ "id": "elevator C floor 2" },
+		{ "id": "elevator C floor 3" },
+		{ "id": "elevator C floor 4" },
+		{ "id": "open doors A" },
+		{ "id": "close doors A" },
+		{ "id": "open doors B" },
+		{ "id": "close doors B" },
+		{ "id": "open doors C" },
+		{ "id": "close doors C" }
+	],
+  "elevators": [
+		{
+			"id": "A",
+			"floors": [ 0, 1, 2, 3, 4, 5, 6 ],
+			"maxSpeed": 1.0,
+			"speedStep": 0.05
+		},
+		{
+			"id": "B",
+			"floors": [ 0, 1, 2, 3, 4 ],
+			"maxSpeed": 1.0,
+			"speedStep": 0.05
+		},
+		{
+			"id": "C",
+			"floors": [ 0, 1, 2, 3, 4 ],
+			"maxSpeed": 1.0,
+			"speedStep": 0.05
+		}
+  ]
+}
