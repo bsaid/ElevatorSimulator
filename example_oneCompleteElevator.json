@@ -1,0 +1,14 @@
+{
+  "buttons": [
+    {"id" : "Ground"},
+    {"id" : "1st floor"},
+    {"id" : "2nd floor"},
+    {"id" : "3rd floor"},
+    {"id" : "Close doors"},
+    {"id" : "Open doors"}
+
+  ],
+  "elevators": [
+    {"id": "Elevator1", "floors": [0,1,2,3], "maxSpeed": 2.0, "speedStep": 0.2}
+      ]
+}
